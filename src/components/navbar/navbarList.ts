@@ -1,7 +1,7 @@
 export const navbarList = [
-    { name: 'Home' },
-    { name: 'Cards' },
-    { name: 'Diagrams' },
-    { name: 'Sava & Invest' },
-    { name: 'Account' },
+    { name: 'Home', link:'/' },
+    { name: 'Cards', link:'/cards' },
+    { name: 'Diagrams', link:'/diagrams' },
+    { name: 'Sava & Invest', link:'/saveinvest' },
+    { name: 'Account', link:'/account' },
 ]
