@@ -1,4 +1,4 @@
-import PageContainer from '../../components/components/PageContainer';
+import PageContainer from '../../components/containers/PageContainer';
 import NavBar from '../../components/navbar/NavBar';
 
 const CardsView = () => {

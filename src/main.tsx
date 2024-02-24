@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Dashboard from './sections/Dashboard/Dashboard.tsx';
+import DashboardView from './sections/Dashboard/DashboardView.tsx';
 import CardsView from './sections/Cards/CardsView.tsx';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Dashboard />,
+        element: <DashboardView />,
     },
     {
         path: '/cards',
@@ -16,15 +16,15 @@ const router = createBrowserRouter([
     },
     {
         path: '/diagrams',
-        element: <Dashboard />,
+        element: <DashboardView />,
     },
     {
         path: '/saveinvest',
-        element: <Dashboard />,
+        element: <DashboardView />,
     },
     {
         path: '/account',
-        element: <Dashboard />,
+        element: <DashboardView />,
     },
 ]);
 
