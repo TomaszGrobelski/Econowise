@@ -5,11 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    colors:{
-      "primary":"#6957E9",
+    // colors:{
+    //   "primary":"#6957E9",
       
-      "white": "#FFFFFF",
-    },
+    //   "white": "#FFFFFF",
+    // },
     extend: {
       colors:{
         main: '#6957E9'
