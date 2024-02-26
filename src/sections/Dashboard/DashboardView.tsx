@@ -1,7 +1,6 @@
 import InfoCard from 'src/components/InfoCard/InfoCard';
-import PageContainer from 'src/components/containers/PageContainer';
-import NavBar from 'src/components/navbar/NavBar';
 import DashboardHeader from './DashboardHeader';
+import AppLayout from 'src/components/layouts/AppLayout';
 
 const DashboardView = () => {
     const financeList = [
@@ -12,9 +11,8 @@ const DashboardView = () => {
     ];
 
     return (
-        <PageContainer>
-            <NavBar />
-            <div>
+        <AppLayout>
+            <div className='p-4'>
                 <DashboardHeader />
                 <div className='grid grid-cols-4 gap-2'>
                     {financeList.map((item) => (
@@ -22,7 +20,7 @@ const DashboardView = () => {
                     ))}
                 </div>
             </div>
-        </PageContainer>
+        </AppLayout>
     );
 };
 

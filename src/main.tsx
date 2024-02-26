@@ -4,6 +4,7 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DashboardView from './sections/Dashboard/DashboardView.tsx';
 import CardsView from './sections/Cards/CardsView.tsx';
+import ShoppingView from './sections/Shooping/ShoppingView.tsx';
 
 
 const router = createBrowserRouter([
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
     {
         path: '/diagrams',
         element: <DashboardView />,
+    },
+    {
+        path: 'shopping',
+        element: <ShoppingView />,
     },
     {
         path: '/saveinvest',
