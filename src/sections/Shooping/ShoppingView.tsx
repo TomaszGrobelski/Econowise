@@ -1,23 +1,30 @@
 import AppLayout from 'src/components/layouts/AppLayout';
-import AddButton from 'src/components/buttons/AddButton';
-import ShoppingLabel from './List/ShoppingLabel';
+import ShoppingHeader from './Header/ShoppingHeader';
+import { ShoppingContextProvider} from 'src/contexts/ShoppingContextProvider';
+// import { useContext } from 'react';
+
+// import ShoppingLabel from './List/ShoppingLabel';
 
 const ShoppingView = () => {
+    // const contextValue = useContext(ShoppingContext);
+
+
     return (
         <AppLayout>
-            <div className=' p-4 space-y-8'>
-                <div className='flex w-full items-center  justify-between'>
-                    <h2>Shopping</h2>
-                    <AddButton />
-                </div>
-                <div>
-                    <ul>
+            <ShoppingContextProvider>
+                <div className=' space-y-8 p-4'>
+                    <ShoppingHeader />
+                    <div>
+                        
+                        {/* <ul>
                         <ShoppingLabel name={'Sałata'} />
-                        <li>1</li>
-                        <li>1</li>
-                    </ul>
+                        <ShoppingLabel name={'Sałata'} />
+                        <ShoppingLabel name={'Sałata'} />
+                        <ShoppingLabel name={'Sałata'} />
+                    </ul> */}
+                    </div>
                 </div>
-            </div>
+            </ShoppingContextProvider>
         </AppLayout>
     );
 };

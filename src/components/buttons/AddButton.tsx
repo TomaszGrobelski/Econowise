@@ -1,8 +1,11 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 
-const AddButton = () => {
+interface AddButtonProps{
+    onClick?:()=>void
+}
+const AddButton = ({onClick}:AddButtonProps) => {
     return (
-        <button className=' flex size-10 items-center justify-center rounded-full bg-green-400 '>
+        <button onClick={onClick} className=' flex size-10 items-center justify-center rounded-full bg-green-400 '>
             <Icon icon='material-symbols:list-alt-add' width={24} className='text-white' />
         </button>
     );

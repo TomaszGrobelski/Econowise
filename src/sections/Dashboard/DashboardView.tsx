@@ -12,7 +12,7 @@ const DashboardView = () => {
 
     return (
         <AppLayout>
-            <div className='p-4'>
+            <div className='p-4 space-y-8'>
                 <DashboardHeader />
                 <div className='grid grid-cols-4 gap-2'>
                     {financeList.map((item) => (
