@@ -7,7 +7,7 @@ const NavBar = () => {
     const [expand, setExpand] = useState(true);
 
     return (
-        <div className={` ${expand ? 'w-48' : 'w-16'} flex relative h-screen  justify-center bg-main`}>
+        <div className={` ${expand ? 'w-48' : 'w-16'} relative h-screen  justify-center bg-main`}>
             <button className='absolute right-3 top-2' onClick={() => setExpand(!expand)}>
                 {expand ? (
                     <Icon icon='subway:left-arrow' width={23} color='white' />
