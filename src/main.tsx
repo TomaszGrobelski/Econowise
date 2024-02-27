@@ -5,8 +5,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import DashboardView from './sections/Dashboard/DashboardView.tsx';
 import CardsView from './sections/Cards/CardsView.tsx';
 import ShoppingView from './sections/Shooping/ShoppingView.tsx';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-
+const queryClient = new QueryClient();
 const router = createBrowserRouter([
     {
         path: '/',
@@ -35,7 +36,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-        <RouterProvider router={router} />
-    </React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+        <React.StrictMode>
+            <RouterProvider router={router} />
+        </React.StrictMode>
+    </QueryClientProvider>
 );
