@@ -13,15 +13,17 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { shoppingCategories } from './shoppingCategoryList';
 
 interface IItems {
-    name: string;
+    product: string;
     quantity: number;
 }
 
 interface IShoppingItem {
     id: number;
     name: string;
+    category:string;
     items: IItems[];
 }
 
@@ -34,10 +36,12 @@ const ShoppingView = () => {
     } = useQuery<IShoppingItem[], AxiosError>('shoppingList', fetchShoppingList);
     const [displayedShoppingList, setDisplayedShoppingList] = useState<IShoppingItem[]>([]);
     const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
+    const list = [{ id: 1, name: 'tom', category:"dom i ogród", items: [{ product: 'tom', quantity: 2 }] }];
 
     useEffect(() => {
         if (shoppingList) {
-            setDisplayedShoppingList(shoppingList);
+            // setDisplayedShoppingList(shoppingList);
+            setDisplayedShoppingList(list);
             console.log(shoppingList);
         }
     }, [shoppingList]);
@@ -83,13 +87,34 @@ const ShoppingView = () => {
                                     aria-controls='panel1-content'
                                     id='panel1-header'
                                 >
-                                    <Typography>{item.name}</Typography>
+                                    <Typography>
+                                        <div className='grid grid-cols-2 gap-10'>
+                                            <p className=''>{item.name}</p>
+                                            <select
+                                                onClick={(e) => e.stopPropagation()}
+                                                name='category'
+                                                id='category'
+                                                className='relative z-10 outline-none '
+                                                defaultValue={item.category}
+                                            >
+                                                {shoppingCategories.map((category) => (
+                                                    <option
+                                                        key={category.name}
+                                                        value={category.name}
+                                                    >
+                                                        {category.name}
+                                                        {category.icon}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <ul className='space-y-4'>
                                         {item.items.map((pos) => (
-                                            <li key={pos.name}>
-                                                <ShoppingLabel name={pos.name} />
+                                            <li key={pos.product}>
+                                                <ShoppingLabel name={pos.product} />
                                             </li>
                                         ))}
                                     </ul>

@@ -1,8 +1,12 @@
 import CustomButton from 'src/components/buttons/CustomButton';
 
-const AddCustomButton = () => {
+interface AddCustomButtonProps {
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+const AddCustomButton = ({onClick}:AddCustomButtonProps) => {
     return (
-        <CustomButton additionalClass='bg-green-500 text-white border-green-800'>Add</CustomButton>
+        <CustomButton onClick={onClick} additionalClass='bg-green-500 text-white border-green-800'>Add</CustomButton>
     );
 };
 
