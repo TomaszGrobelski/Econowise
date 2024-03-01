@@ -5,7 +5,7 @@ import { fetchShoppingList } from 'src/API/fetchShoppingList';
 import IsLoading from 'src/components/api/IsLoading';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import ShoppingLabel from './List/ShoppingLabel';
+// import ShoppingLabel from './List/ShoppingLabel';
 import Accordion, { AccordionSlots } from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -23,28 +23,31 @@ interface IItems {
 interface IShoppingItem {
     id: number;
     name: string;
-    category:string;
+    category: string;
     items: IItems[];
 }
 
 const ShoppingView = () => {
     const {
-        data: shoppingList,
+        data: shopping,
         isLoading,
         isError,
         error,
-    } = useQuery<IShoppingItem[], AxiosError>('shoppingList', fetchShoppingList);
+    } = useQuery<IShoppingItem[], AxiosError>('shopping', fetchShoppingList);
     const [displayedShoppingList, setDisplayedShoppingList] = useState<IShoppingItem[]>([]);
     const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
-    const list = [{ id: 1, name: 'tom', category:"dom i ogród", items: [{ product: 'tom', quantity: 2 }] }];
+
+    // const list = [
+    //     { id: 1, name: 'tom', category: 'dom i ogród', items: [{ product: 'tom', quantity: 2 }] },
+    // ];
 
     useEffect(() => {
-        if (shoppingList) {
-            // setDisplayedShoppingList(shoppingList);
-            setDisplayedShoppingList(list);
-            console.log(shoppingList);
+        if (shopping) {
+            setDisplayedShoppingList(shopping);
+            // setDisplayedShoppingList(list);
+            console.log(shopping);
         }
-    }, [shoppingList]);
+    }, [shopping]);
 
     if (isLoading) {
         return <IsLoading />;
@@ -68,6 +71,7 @@ const ShoppingView = () => {
                 <div>
                     <ul className='space-y-3'>
                         {displayedShoppingList.map((item: IShoppingItem) => (
+                            
                             <Accordion
                                 expanded={expanded[item.id]}
                                 onChange={() => handleExpansion(item.id)}
@@ -112,11 +116,12 @@ const ShoppingView = () => {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <ul className='space-y-4'>
-                                        {item.items.map((pos) => (
+
+                                        {/* {JSON.parse(item.items).map((pos) => (
                                             <li key={pos.product}>
                                                 <ShoppingLabel name={pos.product} />
                                             </li>
-                                        ))}
+                                        ))} */}
                                     </ul>
                                     <div className='flex pt-4'>
                                         <input

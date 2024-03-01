@@ -9,16 +9,17 @@ const ShoppingHeader = () => {
     const handleCloseModal = () => setOpenModal(false);
 
     const handleDelete = async () => {
-        const shoppingIdToDelete = 2;
+        const shoppingIdToDelete = 4;
         try {
             const response = await axios.delete(
-                `https://econowise-server.vercel.app/shoppinglist/${shoppingIdToDelete}`
+                `http://econowise-server.vercel.app/shopping/clear/${shoppingIdToDelete}`
             );
-            console.log(response.data);
+            console.log('Response:', response);
         } catch (error) {
-            console.log(error);
+            console.log('Error:', error);
         }
     };
+
     return (
         <div className='flex w-full items-center justify-between  gap-12'>
             <h2>Shopping</h2>

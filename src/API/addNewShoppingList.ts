@@ -13,7 +13,7 @@ const addNewShoppingList = async (listName:string, category:string) => {
     };
 
     try {
-        const response = await axios.post('https://econowise-server.vercel.app/shopping-list', newList);
+        const response = await axios.post('https://econowise-server.vercel.app/shopping', newList);
         console.log('Shopping list added successfully:', response.data);
     } catch (error) {
         console.error('Error adding shopping list:', error);
