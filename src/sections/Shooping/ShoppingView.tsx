@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { shoppingCategories } from './shoppingCategoryList';
+import axios from 'axios';
 
 interface IItems {
     product: string;
@@ -36,7 +37,7 @@ const ShoppingView = () => {
     } = useQuery<IShoppingItem[], AxiosError>('shopping', fetchShoppingList);
     const [displayedShoppingList, setDisplayedShoppingList] = useState<IShoppingItem[]>([]);
     const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
-
+    const [inputValue, setInputValue] = useState('');
     // const list = [
     //     { id: 1, name: 'tom', category: 'dom i ogród', items: [{ product: 'tom', quantity: 2 }] },
     // ];
@@ -64,6 +65,24 @@ const ShoppingView = () => {
         }));
     };
 
+    const handleAddItem = async () => {
+        console.log(inputValue);
+        const listId = 9;
+        const newItem = {
+            name: 'Jabłko',
+            quantity: 1,
+        };
+
+        try {
+            const response = await axios.put(`http://localhost:3000/shopping/item/${listId}`, {
+                newItem,
+            });
+            console.log('Response:', response);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
     return (
         <AppLayout>
             <div className=' w-full max-w-[900px] space-y-8 p-4'>
@@ -71,7 +90,6 @@ const ShoppingView = () => {
                 <div>
                     <ul className='space-y-3'>
                         {displayedShoppingList.map((item: IShoppingItem) => (
-                            
                             <Accordion
                                 expanded={expanded[item.id]}
                                 onChange={() => handleExpansion(item.id)}
@@ -116,19 +134,17 @@ const ShoppingView = () => {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <ul className='space-y-4'>
-
-                                        {/* {JSON.parse(item.items).map((pos) => (
-                                            <li key={pos.product}>
-                                                <ShoppingLabel name={pos.product} />
-                                            </li>
+                                        {/* {item.items.map((poz) => (
+                                            <li key={poz.name}>{poz.name}</li>
                                         ))} */}
                                     </ul>
                                     <div className='flex pt-4'>
                                         <input
                                             className='w-full border-b-[1px] pl-12 outline-none'
                                             type='text'
+                                            onChange={(e) => setInputValue(e.target.value)}
                                         />
-                                        <button>
+                                        <button onClick={handleAddItem}>
                                             <Icon
                                                 icon='basil:add-solid'
                                                 color='#6957E9'

@@ -9,10 +9,10 @@ const ShoppingHeader = () => {
     const handleCloseModal = () => setOpenModal(false);
 
     const handleDelete = async () => {
-        const shoppingIdToDelete = 4;
+        const shoppingIdToDelete = 8;
         try {
             const response = await axios.delete(
-                `http://econowise-server.vercel.app/shopping/clear/${shoppingIdToDelete}`
+                `http://localhost:3000/shopping/clear/${shoppingIdToDelete}`
             );
             console.log('Response:', response);
         } catch (error) {
