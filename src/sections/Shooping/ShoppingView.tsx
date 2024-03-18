@@ -1,11 +1,7 @@
 import AppLayout from 'src/components/layouts/AppLayout';
 import ShoppingHeader from './Header/ShoppingHeader';
-import { useQuery } from 'react-query';
-import { fetchShoppingList } from 'src/API/fetchShoppingList';
 import IsLoading from 'src/components/api/IsLoading';
-import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
-// import ShoppingLabel from './List/ShoppingLabel';
+import { useState } from 'react';
 import Accordion, { AccordionSlots } from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -15,40 +11,12 @@ import Fade from '@mui/material/Fade';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { shoppingCategories } from './shoppingCategoryList';
 import axios from 'axios';
-
-interface IItems {
-    product: string;
-    quantity: number;
-}
-
-interface IShoppingItem {
-    id: number;
-    name: string;
-    category: string;
-    items: IItems[];
-}
+import { useShoppingQuery } from 'src/API/shopping/shopping';
 
 const ShoppingView = () => {
-    const {
-        data: shopping,
-        isLoading,
-        isError,
-        error,
-    } = useQuery<IShoppingItem[], AxiosError>('shopping', fetchShoppingList);
-    const [displayedShoppingList, setDisplayedShoppingList] = useState<IShoppingItem[]>([]);
+    const { data: shopping, isLoading, isError, error } = useShoppingQuery();
     const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
     const [inputValue, setInputValue] = useState('');
-    // const list = [
-    //     { id: 1, name: 'tom', category: 'dom i ogród', items: [{ product: 'tom', quantity: 2 }] },
-    // ];
-
-    useEffect(() => {
-        if (shopping) {
-            setDisplayedShoppingList(shopping);
-            // setDisplayedShoppingList(list);
-            console.log(shopping);
-        }
-    }, [shopping]);
 
     if (isLoading) {
         return <IsLoading />;
@@ -89,72 +57,73 @@ const ShoppingView = () => {
                 <ShoppingHeader />
                 <div>
                     <ul className='space-y-3'>
-                        {displayedShoppingList.map((item: IShoppingItem) => (
-                            <Accordion
-                                expanded={expanded[item.id]}
-                                onChange={() => handleExpansion(item.id)}
-                                slots={{ transition: Fade as AccordionSlots['transition'] }}
-                                slotProps={{ transition: { timeout: 400 } }}
-                                sx={{
-                                    '& .MuiAccordion-region': {
-                                        height: expanded[item.id] ? 'auto' : 0,
-                                    },
-                                    '& .MuiAccordionDetails-root': {
-                                        display: expanded[item.id] ? 'block' : 'none',
-                                    },
-                                }}
-                            >
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls='panel1-content'
-                                    id='panel1-header'
+                        {shopping &&
+                            shopping.map((item) => (
+                                <Accordion
+                                    expanded={expanded[item.id]}
+                                    onChange={() => handleExpansion(item.id)}
+                                    slots={{ transition: Fade as AccordionSlots['transition'] }}
+                                    slotProps={{ transition: { timeout: 400 } }}
+                                    sx={{
+                                        '& .MuiAccordion-region': {
+                                            height: expanded[item.id] ? 'auto' : 0,
+                                        },
+                                        '& .MuiAccordionDetails-root': {
+                                            display: expanded[item.id] ? 'block' : 'none',
+                                        },
+                                    }}
                                 >
-                                    <Typography>
-                                        <div className='grid grid-cols-2 gap-10'>
-                                            <p className=''>{item.name}</p>
-                                            <select
-                                                onClick={(e) => e.stopPropagation()}
-                                                name='category'
-                                                id='category'
-                                                className='relative z-10 outline-none '
-                                                defaultValue={item.category}
-                                            >
-                                                {shoppingCategories.map((category) => (
-                                                    <option
-                                                        key={category.name}
-                                                        value={category.name}
-                                                    >
-                                                        {category.name}
-                                                        {category.icon}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <ul className='space-y-4'>
-                                        {/* {item.items.map((poz) => (
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls='panel1-content'
+                                        id='panel1-header'
+                                    >
+                                        <Typography>
+                                            <div className='grid grid-cols-2 gap-10'>
+                                                <p className=''>{item.name}</p>
+                                                <select
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    name='category'
+                                                    id='category'
+                                                    className='relative z-10 outline-none '
+                                                    defaultValue={item.category}
+                                                >
+                                                    {shoppingCategories.map((category) => (
+                                                        <option
+                                                            key={category.name}
+                                                            value={category.name}
+                                                        >
+                                                            {category.name}
+                                                            {category.icon}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <ul className='space-y-4'>
+                                            {/* {item.items.map((poz) => (
                                             <li key={poz.name}>{poz.name}</li>
                                         ))} */}
-                                    </ul>
-                                    <div className='flex pt-4'>
-                                        <input
-                                            className='w-full border-b-[1px] pl-12 outline-none'
-                                            type='text'
-                                            onChange={(e) => setInputValue(e.target.value)}
-                                        />
-                                        <button onClick={handleAddItem}>
-                                            <Icon
-                                                icon='basil:add-solid'
-                                                color='#6957E9'
-                                                width={35}
+                                        </ul>
+                                        <div className='flex pt-4'>
+                                            <input
+                                                className='w-full border-b-[1px] pl-12 outline-none'
+                                                type='text'
+                                                onChange={(e) => setInputValue(e.target.value)}
                                             />
-                                        </button>
-                                    </div>
-                                </AccordionDetails>
-                            </Accordion>
-                        ))}
+                                            <button onClick={handleAddItem}>
+                                                <Icon
+                                                    icon='basil:add-solid'
+                                                    color='#6957E9'
+                                                    width={35}
+                                                />
+                                            </button>
+                                        </div>
+                                    </AccordionDetails>
+                                </Accordion>
+                            ))}
                     </ul>
                 </div>
             </div>

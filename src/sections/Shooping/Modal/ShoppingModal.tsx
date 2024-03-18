@@ -7,6 +7,7 @@ import CloseCustomButton from './CloseCustomButton';
 import { shoppingCategories } from '../shoppingCategoryList';
 import { addNewShoppingList } from 'src/API/addNewShoppingList';
 import { useState } from 'react';
+// import { useShoppingMutation } from 'src/API/shopping/shopping';
 
 interface ShoppingModalProps {
     openModal: boolean;
@@ -17,9 +18,21 @@ const ShoppingModal = ({ openModal, handleCloseModal }: ShoppingModalProps) => {
     const [listName, setListName] = useState('');
     const [category, setCategory] = useState('inne');
 
+    // const { useAddNewList } = useShoppingMutation();
+    // const addNewListMutation = useAddNewList({
+    //     onSuccess: () => {
+    //         console.log('Shopping list added successfully');
+           
+    //     },
+    //     onError: (error) => {
+    //         console.error('Error adding shopping list:', error);
+    //     },
+    // });
+
     const handleAddList = (e: React.MouseEvent<HTMLButtonElement>) => {
         addNewShoppingList(listName, category);
         handleCloseModal(e);
+        // addNewListMutation.mutate({ name: listName, category });
     };
 
     return (
