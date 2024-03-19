@@ -5,40 +5,36 @@ import { style } from './modal.style';
 import AddCustomButton from './AddCustomButton';
 import CloseCustomButton from './CloseCustomButton';
 import { shoppingCategories } from '../shoppingCategoryList';
-import { addNewShoppingList } from 'src/API/addNewShoppingList';
 import { useState } from 'react';
-// import { useShoppingMutation } from 'src/API/shopping/shopping';
+import { useShoppingMutation } from 'src/API/shopping/shopping';
 
 interface ShoppingModalProps {
-    openModal: boolean;
-    handleCloseModal: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    refetch: VoidFunction;
+    isOpen: boolean;
+    onClose: VoidFunction;
 }
 
-const ShoppingModal = ({ openModal, handleCloseModal }: ShoppingModalProps) => {
+const ShoppingModal = ({ isOpen, onClose, refetch }: ShoppingModalProps) => {
+    const { useAddNewList } = useShoppingMutation();
     const [listName, setListName] = useState('');
     const [category, setCategory] = useState('inne');
 
-    // const { useAddNewList } = useShoppingMutation();
-    // const addNewListMutation = useAddNewList({
-    //     onSuccess: () => {
-    //         console.log('Shopping list added successfully');
-           
-    //     },
-    //     onError: (error) => {
-    //         console.error('Error adding shopping list:', error);
-    //     },
-    // });
+    const onSuccess = () => {
+        onClose()
+        refetch();
+    };
+    const onError = () => {};
 
-    const handleAddList = (e: React.MouseEvent<HTMLButtonElement>) => {
-        addNewShoppingList(listName, category);
-        handleCloseModal(e);
-        // addNewListMutation.mutate({ name: listName, category });
+    const { mutate: mutateAddList } = useAddNewList(onSuccess, onError);
+
+    const handleAddList = () => {
+        mutateAddList({ name: listName, category, items: [] });
     };
 
     return (
         <Modal
-            open={openModal}
-            onClose={handleCloseModal}
+            open={isOpen}
+            onClose={()=>onClose()}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'
         >
@@ -73,7 +69,7 @@ const ShoppingModal = ({ openModal, handleCloseModal }: ShoppingModalProps) => {
                 </Typography>
                 <div className='space-x-6 pt-4'>
                     <AddCustomButton onClick={handleAddList} />
-                    <CloseCustomButton onClick={handleCloseModal} />
+                    <CloseCustomButton onClick={()=>onClose()} />
                 </div>
             </Box>
         </Modal>

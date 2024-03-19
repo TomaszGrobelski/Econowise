@@ -6,6 +6,7 @@ import { IShoppingList } from 'src/types/shopping';
 interface IApi {
     getShoppingList: () => Promise<IShoppingList[]>;
     addNewShoppingList: (body: IShoppingList) => Promise<unknown>;
+    deleteShoppingList: (shoppingListId: number) => Promise<unknown>;
 }
 
 export const api = (): IApi => {
@@ -17,8 +18,12 @@ export const api = (): IApi => {
     const addNewShoppingList = (body: IShoppingList): Promise<unknown> =>
         axios.post('https://econowise-server.vercel.app/shopping', body);
 
+    const deleteShoppingList = (shoppingListId: number) =>
+        axios.delete(`${endpoints.shopping.deleteList}/${shoppingListId}`);
+
     return {
         getShoppingList,
         addNewShoppingList,
+        deleteShoppingList,
     };
 };

@@ -9,14 +9,17 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { shoppingCategories } from './shoppingCategoryList';
+import { shoppingCategories } from 'src/constans/shopping';
 import axios from 'axios';
-import { useShoppingQuery } from 'src/API/shopping/shopping';
+import { useShoppingMutation, useShoppingQuery } from 'src/API/shopping/shopping';
+import AddShoppingList from './Header/AddShoppingList';
+import IconButton from 'src/components/buttons/IconButton';
 
 const ShoppingView = () => {
-    const { data: shopping, isLoading, isError, error } = useShoppingQuery();
+    const { data: shopping, isLoading, isError, error, refetch } = useShoppingQuery();
     const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
     const [inputValue, setInputValue] = useState('');
+    const listMutation = useShoppingMutation();
 
     if (isLoading) {
         return <IsLoading />;
@@ -35,7 +38,7 @@ const ShoppingView = () => {
 
     const handleAddItem = async () => {
         console.log(inputValue);
-        const listId = 9;
+        const listId = 16;
         const newItem = {
             name: 'Jabłko',
             quantity: 1,
@@ -51,10 +54,17 @@ const ShoppingView = () => {
         }
     };
 
+    const { isLoading: deleteLoading, mutate: deleteList } = listMutation.useDeleteList();
+    const handleDeleteList = (id: number) => {
+        deleteList(id);
+    };
     return (
         <AppLayout>
             <div className=' w-full max-w-[900px] space-y-8 p-4'>
-                <ShoppingHeader />
+                <div className='flex w-full items-center justify-between  gap-12'>
+                    <ShoppingHeader />
+                    <AddShoppingList refetch={refetch} />
+                </div>
                 <div>
                     <ul className='space-y-3'>
                         {shopping &&
@@ -79,7 +89,7 @@ const ShoppingView = () => {
                                         id='panel1-header'
                                     >
                                         <Typography>
-                                            <div className='grid grid-cols-2 gap-10'>
+                                            <div className='grid grid-cols-3 gap-10'>
                                                 <p className=''>{item.name}</p>
                                                 <select
                                                     onClick={(e) => e.stopPropagation()}
@@ -98,6 +108,12 @@ const ShoppingView = () => {
                                                         </option>
                                                     ))}
                                                 </select>
+                                                <IconButton
+                                                    isLoading={deleteLoading}
+                                                    onClick={()=>handleDeleteList(item.id)}
+                                                >
+                                                    <Icon icon='ion:trash' color='red' />
+                                                </IconButton>
                                             </div>
                                         </Typography>
                                     </AccordionSummary>
