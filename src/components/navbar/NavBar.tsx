@@ -19,7 +19,7 @@ const NavBar = () => {
                 <ul className='flex flex-col gap-6 pt-16'>
                     {navbarList.map((item) => (
                         <Link key={item.name} to={item.link} className='text-[1.1rem] text-white'>
-                            <div className='flex items-center gap-2 pl-2'>
+                            <div className='flex items-center gap-2 pl-2 font-Montserrat'>
                                 <Icon icon={item.icon} width={22} />
                                 {expand && item.name}
                             </div>

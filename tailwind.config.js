@@ -8,6 +8,7 @@ export default {
             },
             fontFamily: {
                 Anton: 'Anton',
+                Montserrat: 'Montserrat',
             },
         },
     },
