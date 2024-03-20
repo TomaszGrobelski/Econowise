@@ -4,5 +4,6 @@ export const endpoints ={
     shopping:{
         base: `${BaseUrl}/shopping`,
         deleteList:`${BaseUrl}/shopping/clear`,
+        addItem: `${BaseUrl}/shopping/item-add`
     }
 }

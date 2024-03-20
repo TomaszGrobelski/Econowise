@@ -1,11 +1,14 @@
 interface IShoppingListItem {
-    product: string;
+    name: string;
     quantity: number;
 }
 
 export interface IShoppingList {
-    // id?: number;
     name: string;
     category: string;
     items: IShoppingListItem[];
+}
+
+export interface IShoppingListWithId extends IShoppingList {
+    id: number;
 }

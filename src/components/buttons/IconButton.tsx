@@ -1,3 +1,5 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
+
 interface IIconButton {
     children: React.ReactNode;
     onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -5,8 +7,8 @@ interface IIconButton {
 }
 const IconButton = ({ children, onClick, isLoading }: IIconButton) => {
     return (
-        <button className='relative z-20' onClick={onClick}>
-            {isLoading ? <div>isLoading</div> : children}
+        <button className='relative z-20 w-4 hover:scale-110' onClick={onClick}>
+            {isLoading ? <Icon icon='eos-icons:bubble-loading' /> : children}
         </button>
     );
 };

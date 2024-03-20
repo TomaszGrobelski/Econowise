@@ -8,7 +8,7 @@ const CustomButton = ({ children, onClick, additionalClass }: CustomButtonProps)
     return (
         <button
             onClick={onClick}
-            className={` w-20 rounded-3xl border-[1px] border-black py-1 font-bold hover:opacity-90 ${additionalClass}`}
+            className={`flex justify-center items-center w-20 rounded-3xl border-[1px] border-black py-1 font-bold hover:opacity-90 ${additionalClass}`}
         >
             {children}
         </button>

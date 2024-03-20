@@ -2,10 +2,7 @@ import { UseQueryResult, useMutation, useQuery } from 'react-query';
 import { api } from './api';
 import { AxiosError } from 'axios';
 import { IShoppingList } from 'src/types/shopping';
-
-interface IShoppingListWithId extends IShoppingList {
-    id: number;
-}
+import { IShoppingListWithId } from 'src/types/shopping';
 
 export const useShoppingQuery = (): UseQueryResult<IShoppingListWithId[], AxiosError> => {
     const { getShoppingList } = api();
@@ -13,7 +10,7 @@ export const useShoppingQuery = (): UseQueryResult<IShoppingListWithId[], AxiosE
 };
 
 export const useShoppingMutation = () => {
-    const { addNewShoppingList, deleteShoppingList } = api();
+    const { addNewShoppingList, deleteShoppingList, addNewShoppingItem } = api();
 
     const useAddNewList = (onSuccess?: VoidFunction, onError?: (error: AxiosError) => void) => {
         return useMutation({
@@ -31,8 +28,17 @@ export const useShoppingMutation = () => {
         });
     };
 
+    const useAddNewItem = (onSuccess?: VoidFunction, onError?: (error: AxiosError) => void) => {
+        return useMutation({
+            mutationFn: (listId: number) => addNewShoppingItem(listId),
+            onSuccess,
+            onError,
+        });
+    };
+
     return {
         useAddNewList,
         useDeleteList,
+        useAddNewItem,
     };
 };

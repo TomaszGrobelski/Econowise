@@ -25,7 +25,7 @@ const ShoppingModal = ({ isOpen, onClose, refetch }: ShoppingModalProps) => {
     };
     const onError = () => {};
 
-    const { mutate: mutateAddList } = useAddNewList(onSuccess, onError);
+    const {isLoading: addLoading, mutate: mutateAddList } = useAddNewList(onSuccess, onError);
 
     const handleAddList = () => {
         mutateAddList({ name: listName, category, items: [] });
@@ -67,8 +67,8 @@ const ShoppingModal = ({ isOpen, onClose, refetch }: ShoppingModalProps) => {
                         ))}
                     </select>
                 </Typography>
-                <div className='space-x-6 pt-4'>
-                    <AddCustomButton onClick={handleAddList} />
+                <div className='flex space-x-6 pt-4'>
+                    <AddCustomButton isLoading={addLoading} onClick={handleAddList} />
                     <CloseCustomButton onClick={()=>onClose()} />
                 </div>
             </Box>

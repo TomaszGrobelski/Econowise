@@ -7,6 +7,7 @@ interface IApi {
     getShoppingList: () => Promise<IShoppingList[]>;
     addNewShoppingList: (body: IShoppingList) => Promise<unknown>;
     deleteShoppingList: (shoppingListId: number) => Promise<unknown>;
+    addNewShoppingItem: (shoppingListId: number) => Promise<unknown>;
 }
 
 export const api = (): IApi => {
@@ -21,9 +22,13 @@ export const api = (): IApi => {
     const deleteShoppingList = (shoppingListId: number) =>
         axios.delete(`${endpoints.shopping.deleteList}/${shoppingListId}`);
 
+    const addNewShoppingItem = (shoppingListId: number) =>
+        axios.put(`${endpoints.shopping.addItem}/${shoppingListId}`);
+        
     return {
         getShoppingList,
         addNewShoppingList,
         deleteShoppingList,
+        addNewShoppingItem,
     };
 };
