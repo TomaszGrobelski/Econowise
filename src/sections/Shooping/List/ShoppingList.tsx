@@ -5,7 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import IsLoading from 'src/components/api/IsLoading';
-import axios from 'axios';
+// import axios from 'axios';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { shoppingCategories } from 'src/constans/shopping';
 import IconButton from 'src/components/buttons/IconButton';
@@ -33,27 +33,46 @@ const ShoppingList = ({ shopping, isLoading, isError, error, refetch }: IShoppin
         }));
     };
 
-    const handleAddItem = async () => {
-        console.log(inputValue);
-        const listId = 49;
-        const newItem = {
-            name: 'Jabłko',
-            quantity: 1,
-        };
-
-        try {
-            const response = await axios.put(`http://localhost:3000/shopping/item-add/${listId}`, {
-                newItem,
-            });
-            console.log('Response:', response);
-        } catch (error) {
-            console.log('Error:', error);
-        }
-    };
     const onSuccess = () => {
         refetch();
     };
     const onError = () => {};
+
+    const { isLoading: addLoading, mutate: addItem } = listMutation.useAddNewItem(
+        onSuccess,
+        onError
+    );
+
+    const handleAddItem = async (listId: number) => {
+        console.log(inputValue);
+        console.log(listId);
+        if (inputValue.length > 0) {
+            const body = {
+                name: inputValue,
+                quantity: 1,
+            };
+            console.log(body);
+            addItem({ listId, body });
+        }
+    };
+    // const handleAddItem = async () => {
+    //     console.log(inputValue);
+    //     const listId = 51;
+    //     const newItem = {
+    //         name: inputValue,
+    //         quantity: 1,
+    //     };
+
+    //     try {
+    //         const response = await axios.put(`http://localhost:3000/shopping/item-add/${listId}`, {
+    //             newItem,
+    //         });
+    //         console.log('Response:', response);
+    //     } catch (error) {
+    //         console.log('Error:', error);
+    //     }
+    // };
+
     const { isLoading: deleteLoading, mutate: deleteList } = listMutation.useDeleteList(
         onSuccess,
         onError
@@ -67,19 +86,19 @@ const ShoppingList = ({ shopping, isLoading, isError, error, refetch }: IShoppin
             {isError && <p>Error: {typeof error === 'string' ? error : error?.message}</p>}
 
             {shopping &&
-                shopping.map((item) => (
+                shopping.map((list) => (
                     <Accordion
-                        key={item.id}
-                        expanded={expanded[item.id]}
-                        onChange={() => handleExpansion(item.id)}
+                        key={list.id}
+                        expanded={expanded[list.id]}
+                        onChange={() => handleExpansion(list.id)}
                         slots={{ transition: Fade as AccordionSlots['transition'] }}
                         slotProps={{ transition: { timeout: 400 } }}
                         sx={{
                             '& .MuiAccordion-region': {
-                                height: expanded[item.id] ? 'auto' : 0,
+                                height: expanded[list.id] ? 'auto' : 0,
                             },
                             '& .MuiAccordionDetails-root': {
-                                display: expanded[item.id] ? 'block' : 'none',
+                                display: expanded[list.id] ? 'block' : 'none',
                             },
                         }}
                     >
@@ -90,13 +109,13 @@ const ShoppingList = ({ shopping, isLoading, isError, error, refetch }: IShoppin
                         >
                             <Typography>
                                 <div className='grid grid-cols-3 gap-10'>
-                                    <p className=''>{item.name}</p>
+                                    <p className=''>{list.name}</p>
                                     <select
                                         onClick={(e) => e.stopPropagation()}
                                         name='category'
                                         id='category'
                                         className='relative z-10 outline-none '
-                                        defaultValue={item.category}
+                                        defaultValue={list.category}
                                     >
                                         {shoppingCategories.map((category) => (
                                             <option key={category.name} value={category.name}>
@@ -107,7 +126,7 @@ const ShoppingList = ({ shopping, isLoading, isError, error, refetch }: IShoppin
                                     </select>
                                     <IconButton
                                         isLoading={deleteLoading}
-                                        onClick={() => handleDeleteList(item.id)}
+                                        onClick={() => handleDeleteList(list.id)}
                                     >
                                         <Icon icon='ion:trash' color='red' width={20} />
                                     </IconButton>
@@ -116,9 +135,9 @@ const ShoppingList = ({ shopping, isLoading, isError, error, refetch }: IShoppin
                         </AccordionSummary>
                         <AccordionDetails>
                             <ul className='space-y-4'>
-                                {item.items &&
-                                    item.items.map((poz) => (
-                                        <ShoppingLabel key={poz.name} name={poz.name} />
+                                {list.items &&
+                                    list.items.map((poz) => (
+                                        <ShoppingLabel key={poz?.name} name={poz?.name} />
                                     ))}
                             </ul>
                             <div className='flex pt-4'>
@@ -127,8 +146,12 @@ const ShoppingList = ({ shopping, isLoading, isError, error, refetch }: IShoppin
                                     type='text'
                                     onChange={(e) => setInputValue(e.target.value)}
                                 />
-                                <button onClick={handleAddItem}>
-                                    <Icon icon='basil:add-solid' color='#6957E9' width={35} />
+                                <button onClick={() => handleAddItem(list.id)}>
+                                    {addLoading ? (
+                                        <IsLoading />
+                                    ) : (
+                                        <Icon icon='basil:add-solid' color='#6957E9' width={35} />
+                                    )}
                                 </button>
                             </div>
                         </AccordionDetails>

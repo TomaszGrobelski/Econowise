@@ -4,13 +4,18 @@ import { AxiosError } from 'axios';
 import { IShoppingList } from 'src/types/shopping';
 import { IShoppingListWithId } from 'src/types/shopping';
 
+interface ShoppingItem{
+    name:string;
+    quantity: number;
+}
+
 export const useShoppingQuery = (): UseQueryResult<IShoppingListWithId[], AxiosError> => {
     const { getShoppingList } = api();
     return useQuery([], () => getShoppingList());
 };
 
 export const useShoppingMutation = () => {
-    const { addNewShoppingList, deleteShoppingList, addNewShoppingItem } = api();
+    const { addNewShoppingList, deleteShoppingList, addShoppingItem } = api();
 
     const useAddNewList = (onSuccess?: VoidFunction, onError?: (error: AxiosError) => void) => {
         return useMutation({
@@ -30,7 +35,7 @@ export const useShoppingMutation = () => {
 
     const useAddNewItem = (onSuccess?: VoidFunction, onError?: (error: AxiosError) => void) => {
         return useMutation({
-            mutationFn: (listId: number) => addNewShoppingItem(listId),
+            mutationFn: (date:{listId: number, body:ShoppingItem}) => addShoppingItem(date.listId, date.body),
             onSuccess,
             onError,
         });

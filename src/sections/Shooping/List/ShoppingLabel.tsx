@@ -22,7 +22,7 @@ const ShoppingLabel = ({ name }: ShoppingLabelProps) => {
                 name='item'
                 id='item'
                 className='size-6 cursor-pointer accent-[#008000] '
-                checked={isChecked}
+                defaultChecked={isChecked}
             />
             <label className='cursor-pointer' htmlFor='item'>
                 {name}
